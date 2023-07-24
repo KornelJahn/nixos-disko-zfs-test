@@ -118,20 +118,26 @@ let
           "local/log" = {
             type = "zfs_fs";
             mountpoint = "/var/log";
-            options.mountpoint = "legacy";
-            "com.sun:auto-snapshot" = "true";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
           };
           "safe/home" = {
             type = "zfs_fs";
             mountpoint = "/home";
-            options.mountpoint = "legacy";
-            "com.sun:auto-snapshot" = "true";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
           };
           "safe/persist" = {
             type = "zfs_fs";
             mountpoint = "/persist";
-            options.mountpoint = "legacy";
-            "com.sun:auto-snapshot" = "true";
+            options = {
+              mountpoint = "legacy";
+              "com.sun:auto-snapshot" = "true";
+            };
           };
         }; # datasets
       }; # zroot
