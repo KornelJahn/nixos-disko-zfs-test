@@ -70,7 +70,7 @@ let
           keyformat = "passphrase";
           keylocation = "prompt";
           # keylocation = "file:///tmp/secret.key";
-          compression = "zstd";
+          compression = "lz4";
           "com.sun:auto-snapshot" = "false";
         };
         # postCreateHook = ''
