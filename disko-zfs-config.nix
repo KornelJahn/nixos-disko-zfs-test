@@ -62,14 +62,6 @@ let
           compression = "lz4";
           "com.sun:auto-snapshot" = "false";
         };
-        options = {
-          encryption = "aes-256-gcm";
-          keyformat = "passphrase";
-          keylocation = "file:///tmp/secret.key";
-        };
-        postCreateHook = ''
-          zfs set keylocation="prompt" rpool
-        '';
 
         datasets = {
           local = {
@@ -79,6 +71,14 @@ let
           safe = {
             type = "zfs_fs";
             options.mountpoint = "none";
+            options = {
+              encryption = "aes-256-gcm";
+              keyformat = "passphrase";
+              keylocation = "file:///tmp/secret.key";
+            };
+            postCreateHook = ''
+              zfs set keylocation="prompt" rpool/safe
+            '';
           };
           "local/root" = {
             type = "zfs_fs";
@@ -109,6 +109,8 @@ let
   }; # devices
 in
 {
-  disk = lib.filterAttrs (n: v: builtins.elem n disks) devices.disk;
-  zpool = lib.filterAttrs (n: v: builtins.elem n zpools) devices.zpool;
+  disko.devices = {
+    disk = lib.filterAttrs (n: v: builtins.elem n disks) devices.disk;
+    zpool = lib.filterAttrs (n: v: builtins.elem n zpools) devices.zpool;
+  };
 }
