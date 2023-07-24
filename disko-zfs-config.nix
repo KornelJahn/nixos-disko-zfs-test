@@ -1,4 +1,4 @@
-{ lib, disks, zpools, ... }:
+{ lib, disks, zpools ? [ ], ... }:
 
 let
   devices = {
@@ -74,11 +74,12 @@ let
             options = {
               encryption = "aes-256-gcm";
               keyformat = "passphrase";
-              keylocation = "file:///tmp/secret.key";
+              keylocation = "prompt";
+              # keylocation = "file:///tmp/secret.key";
             };
-            postCreateHook = ''
-              zfs set keylocation="prompt" rpool/safe
-            '';
+            # postCreateHook = ''
+            #   zfs set keylocation="prompt" rpool/safe
+            # '';
           };
           "local/root" = {
             type = "zfs_fs";
