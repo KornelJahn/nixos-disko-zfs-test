@@ -15,11 +15,11 @@
     keyMap = "us";
   };
 
-  disko.devices = (import ./disko-zfs-config.nix {
+  disko = (import ./disko-zfs-config.nix {
     inherit lib;
     disks = [ "x" "y" ];
     zpools = [ "rpool" ];
-  }).disko.devices;
+  }).disko;
 
   boot.loader.grub = {
     enable = true;
