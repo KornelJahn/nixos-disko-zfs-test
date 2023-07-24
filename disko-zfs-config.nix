@@ -77,7 +77,7 @@ let
         #   zfs set keylocation="prompt" rpool
         # '';
         options = {
-          ashift = 12;
+          ashift = "12";
           autotrim = "on";
         };
 
