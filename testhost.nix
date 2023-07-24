@@ -9,13 +9,13 @@
   ];
 
   disko.devices = import ./disko-zfs-config.nix {
+    inherit lib;
     disks = [ "x" "y" ];
     zpools = [ "rpool" ];
   };
 
   boot.loader.grub = {
     enable = true;
-    version = 2;
     efiSupport = true;
     efiInstallAsRemovable = true;
     mirroredBoots = [
@@ -23,6 +23,8 @@
       { devices = [ "nodev" ]; path = "/boot2"; efiSysMountPoint = "/boot2"; }
     ];
   };
+
+  networking.hostId = "deadbeef";
 
   services.openssh.enable = true;
 

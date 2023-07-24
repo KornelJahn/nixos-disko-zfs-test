@@ -62,7 +62,6 @@ let
           compression = "lz4";
           "com.sun:auto-snapshot" = "false";
         };
-        mountpoint = "/";
         options = {
           encryption = "aes-256-gcm";
           keyformat = "passphrase";
@@ -73,24 +72,36 @@ let
         '';
 
         datasets = {
+          local = {
+            type = "zfs_fs";
+            options.mountpoint = "none";
+          };
+          safe = {
+            type = "zfs_fs";
+            options.mountpoint = "none";
+          };
           "local/root" = {
             type = "zfs_fs";
             mountpoint = "/";
+            options.mountpoint = "legacy";
             postCreateHook = ''
-              zfs snapshot rpool/root@blank
+              zfs snapshot rpool/local/root@blank
             '';
           };
           "local/nix" = {
             type = "zfs_fs";
             mountpoint = "/nix";
+            options.mountpoint = "legacy";
           };
           "local/log" = {
             type = "zfs_fs";
             mountpoint = "/var/log";
+            options.mountpoint = "legacy";
           };
           "safe/home" = {
             type = "zfs_fs";
             mountpoint = "/home";
+            options.mountpoint = "legacy";
           };
         }; # datasets
       }; # zroot
@@ -98,6 +109,6 @@ let
   }; # devices
 in
 {
-  disk = lib.filterAttrs (n: v: disks ? n) devices.disk;
-  zpool = lib.filterAttrs (n: v: zpools ? n) devices.zpool;
+  disk = lib.filterAttrs (n: v: builtins.elem n disks) devices.disk;
+  zpool = lib.filterAttrs (n: v: builtins.elem n zpools) devices.zpool;
 }
