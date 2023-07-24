@@ -8,11 +8,18 @@
     disko.nixosModules.disko
   ];
 
-  disko.devices = import ./disko-zfs-config.nix {
+  time.timeZone = "Europe/Budapest";
+  i18n.defaultLocale = "en_US.UTF-8";
+  console = {
+    font = "Lat2-Treminus16";
+    keyMap = "us";
+  };
+
+  disko.devices = (import ./disko-zfs-config.nix {
     inherit lib;
     disks = [ "x" "y" ];
     zpools = [ "rpool" ];
-  };
+  }).disko.devices;
 
   boot.loader.grub = {
     enable = true;
@@ -34,4 +41,6 @@
     #   ""
     # ];
   };
+
+  system.stateVersion = "23.05";
 }
