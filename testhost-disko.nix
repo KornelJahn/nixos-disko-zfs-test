@@ -16,6 +16,8 @@ let
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot1";
+                # FIXME: to make mounting with one disk only smoother
+                # mountOptions = [ "nofail" ];
               };
             };
             zfs = {
@@ -41,6 +43,8 @@ let
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot2";
+                # FIXME: to make mounting with one disk only smoother
+                # mountOptions = [ "nofail" ];
               };
             };
             zfs = {

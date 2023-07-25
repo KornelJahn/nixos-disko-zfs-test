@@ -161,8 +161,16 @@ in
     Defaults lecture = never
   '';
 
-  # Explicitly disable ZFS mount service since we rely on legacy mounts
-  systemd.services.zfs-mount.enable = false;
+  systemd = {
+    enableEmergencyMode = false;
+
+    # Explicitly disable ZFS mount service since we rely on legacy mounts
+    services.zfs-mount.enable = false;
+
+    extraConfig = ''
+      DefaultTimeoutStopSec=10s
+    '';
+  };
 
   users = {
     mutableUsers = false;
