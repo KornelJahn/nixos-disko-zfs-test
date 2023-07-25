@@ -11,7 +11,7 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 ## Usage
 
 1. Fork this flake for yourself to modify it to your liking.
-2. (Optional) Prepare a VM with two identical disks. Recommended size is 16 GiB each. By default, VirtualBox hypervisor is considered. For QEMU/KVM (with virtio storage), please edit `testhost.nix` and uncomment the import of `qemu-guest.nix` and comment the import of `vbox-guest.nix`.
+2. (Optional) Prepare a VM with two identical disks. Recommended size is 16 GiB each (not pre-allocated but dynamically sized). By default, VirtualBox hypervisor is considered. For QEMU/KVM (with virtio storage), please edit `testhost.nix` and uncomment the import of `qemu-guest.nix` and comment the import of `vbox-guest.nix`.
 3. Boot up a NixOS ISO (minimal ISO is recommended).
 4. Fire up a Nix shell with Git and Tmux (for convenience):
 
