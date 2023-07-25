@@ -29,18 +29,45 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
    This script also performs some pre- and post-install operations necessary for some state to become persistent.
 
-## Tips
+## Troubleshooting
+
+### Installation
 
 If you get the following error during NixOS installation after having edited the config,
 
-```
-error: filesystem error: cannot rename: Invalid cross-device link [...] [...]
-```
+    error: filesystem error: cannot rename: Invalid cross-device link [...] [...]
 
 then there is likely a different underlying error, which is unfortunately masked by this one.
 
 In that case, try to build the system config first as
 
-     nix build .#nixosConfigurations.testhost.config.system.build.toplevel
+    nix build .#nixosConfigurations.testhost.config.system.build.toplevel
 
 which will then reveal the root cause for the error.
+
+### Single-disk boot
+
+If one is forced to do a single-disk boot (e.g. due to a failed second disk),
+it may happen that one is dropped into the UEFI shell because the default ESP
+is missing. In that case, available (mounted) additional spare ESPs are listed when
+entering the UEFI shell or can be listed using `map -r`. Additional mirrored
+(non-default) and mounted spare ESP file systems appear as `FSx`. Suppose our
+spare ESP file system is `FS0`. In this case, all you need to do is to change
+to that file system and find & launch the corresponding `.efi` executable of
+the OS (say, `BOOTX64.EFI`) as
+
+    FS0:
+    cd EFI/BOOT
+    BOOTX64.EFI
+
+If on subsequent reboots, the EFI shell keeps coming up, it is worth examining
+the boot order inside the EFI shell using
+
+    bcfg boot dump -s
+
+and -- if necessary -- move some entries around specifying their actual number
+and the target number, e.g.
+
+    bcfg boot mv 02 04
+
+Credits: https://www.youtube.com/watch?v=t_7gBLUa600
