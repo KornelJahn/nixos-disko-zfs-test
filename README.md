@@ -19,20 +19,25 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
 5. Find out persistent virtual disk IDs by comparing `lsblk` and `ls -l /dev/disk/by-id` outputs and modify `testhost-disko.nix` accordingly.
 6. Clone the flake using Git and switch to the repo directory.
-7. Set up encryption passphrase and user passwords in advance for unattended filesystem creation and installation as (with help of the helper function from `readpass.bash`:
+7. Set up encryption passphrase and user passwords in advance for unattended filesystem creation and installation as:
 
-        source readpass.bash
-        readpass plain /tmp/pass-zpool-rpool
-        readpass sha-512 /tmp/pass-user-root
-        readpass sha-512 /tmp/pass-user-nixos
+        ./mkpass plain /tmp/pass-zpool-rpool
+        ./mkpass sha-512 /tmp/pass-user-root
+        ./mkpass sha-512 /tmp/pass-user-nixos
+
+   Alternatively, for quick testing, execute
+
+        ./testhost-pass
+
+   to set all required passwords and passphrases to `password`.
 
 8. Partition the disks and create the zpools as
 
-        ./provision.bash testhost
+        ./provision testhost
 
 9. Install NixOS as
 
-        ./install.bash testhost
+        ./install testhost
 
    This script also performs some pre- and post-install operations necessary for some state to become persistent.
 

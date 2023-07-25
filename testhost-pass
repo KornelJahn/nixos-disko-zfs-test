@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+password="${1:-password}"
+./mkpass plain /tmp/pass-zpool-rpool "$password"
+./mkpass sha-512 /tmp/pass-user-root "$password"
+./mkpass sha-512 /tmp/pass-user-nixos "$password"
