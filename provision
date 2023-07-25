@@ -1,52 +1,52 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-fail() { echo -e "$1" >&2; exit 1; }
-
-usage="usage: $(basename $0) [-h] [-t <target-hostname>] "
-usage+='[-d <disks-list-nix-expr>] [-p <zpools-list-nix-expr>] '
+usage="usage: $(basename "$0") [-h] [-t <target-host>] "
+usage+='[-d <disks-list-nix-expr>] [-p <zpools-list-nix-expr>] -- '
 usage+='[<extra-disko-args>...]'
 
-hostname="${TARGET_HOSTNAME:-}"
-config_nix_args=
-disko_args=
+parsed=$(getopt -o ht:d:p: -l help,target-host:,disks:,pools: -n "$0" -- "$@")
+eval set -- "$parsed"
 
-while [ -n "$1" ]; do
+target_host="${TARGET_HOST:-}"
+config_nix_args=()
+
+while true; do
   case $1 in
     -h|--help)
       echo "$usage"
       exit 0
       ;;
-    -t)
-      shift
-      hostname="$1"
-      shift
+    -t|--target-host)
+      target_host="$2"
+      shift 2
       ;;
-    -d)
-      shift
-      config_nix_args+="--arg disks $1 "
-      shift
+    -d|--disks)
+      config_nix_args+=("--arg disks $2")
+      shift 2
       ;;
-    -p)
+    -p|--pools)
+      config_nix_args+=("--arg zpools $2")
+      shift 2
+      ;;
+    --)
       shift
-      config_nix_args+="--arg zpools $1 "
-      shift
+      break
       ;;
     *)
-      disko_args+="$1 "
-      shift
+      fail "internal error"
       ;;
   esac
 done
 
-[ -n "$hostname" ] || fail "error: target hostname not configured\n\n$usage"
+: "${target_host:?Missing -t}"
 
 set -x
 
 sudo nix run github:nix-community/disko \
   --extra-experimental-features 'nix-command flakes' \
   -- \
-  $disko_args \
-  --mode disko "./$hostname-disko.nix" \
-  $config_nix_args
+  --mode disko "./$target_host-disko.nix" \
+  "${config_nix_args[@]}" \
+  "$@"

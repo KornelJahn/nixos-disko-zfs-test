@@ -1,31 +1,35 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-fail() { echo -e "$1" >&2; exit 1; }
+usage="usage: $(basename "$0") [-h] [-t <target-host>]"
 
-usage="usage: $(basename $0) [-h] [-t <target-hostname>]"
+parsed=$(getopt -o ht: --long help,target-host: --name "$0" -- "$@")
+eval set -- "$parsed"
 
-hostname="$TARGET_HOSTNAME"
+target_host="${TARGET_HOST:-}"
 
-while [ -n "$1" ]; do
+while true; do
   case $1 in
     -h|--help)
-      printf %s\\n "$usage"
+      echo "$usage"
       exit 0
       ;;
-    -t)
+    -t|--target_host)
+      target_host="$2"
+      shift 2
+      ;;
+    --)
       shift
-      hostname="$1"
-      shift
+      break
       ;;
     *)
-      fail "unknown option: $1"
+      fail "internal error"
       ;;
   esac
 done
 
-[ -n "$hostname" ] || fail "error: target hostname not configured\\n\\n$usage"
+: "${target_host:?Missing -t}"
 
 set -x
 
@@ -36,7 +40,7 @@ sudo mkdir -p /mnt/persistent/etc/ssh
 sudo cp -a /tmp/pass-user-* /mnt/persistent/etc/
 
 # Installation
-sudo nixos-install --flake ".#$hostname" --no-root-passwd
+sudo nixos-install --flake ".#$target_host" --no-root-passwd
 
 # Post-installation tasks
 sudo cp -ar /mnt/etc/ssh/authorized_keys.d /mnt/persistent/etc/ssh/

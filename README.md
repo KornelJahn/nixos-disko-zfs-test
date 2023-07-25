@@ -21,9 +21,9 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 6. Clone the flake using Git and switch to the repo directory.
 7. Set up encryption passphrase and user passwords in advance for unattended filesystem creation and installation as:
 
-        ./mkpass plain /tmp/pass-zpool-rpool
-        ./mkpass sha-512 /tmp/pass-user-root
-        ./mkpass sha-512 /tmp/pass-user-nixos
+        ./mkpass -o /tmp/pass-zpool-rpool
+        ./mkpass -o /tmp/pass-user-root -a sha-512
+        ./mkpass -o /tmp/pass-user-nixos -a sha-512
 
    Alternatively, for quick testing, execute
 
@@ -31,13 +31,17 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
    to set all required passwords and passphrases to `password`.
 
+8. Set target hostname as
+
+        export TARGET_HOST=testhost
+
 8. Partition the disks and create the zpools as
 
-        ./provision -t testhost
+        ./provision
 
 9. Install NixOS as
 
-        ./install -t testhost
+        ./install
 
    This script also performs some pre- and post-install operations necessary for some state to become persistent.
 
