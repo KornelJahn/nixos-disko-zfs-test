@@ -4,7 +4,7 @@ set -euo pipefail
 
 usage="usage: $(basename "$0") [-h] [-t <target-host>]"
 
-parsed=$(getopt -o ht: --long help,target-host: --name "$0" -- "$@")
+parsed=$(getopt -o ht: --l help,target-host: --name "$0" -- "$@")
 eval set -- "$parsed"
 
 target_host="${TARGET_HOST:-}"
