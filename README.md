@@ -87,3 +87,25 @@ and the target number, e.g.
     bcfg boot mv 02 04
 
 Credits: https://www.youtube.com/watch?v=t_7gBLUa600
+
+### Partial partitioning and file system creation
+
+The disko configuration of this flake is composed in a way that partitioning
+and file system creation can also run on a subset of disks, e.g. when replacing
+a failed disk or adding additional disks later for a new mirrored zpool
+storage.
+
+Accordingly, `provision` can be run as
+
+     ./provision -d '[ "disk1" ]'
+
+for partitioning of one disk only, or as
+
+    ./provision -d '[ "disk3" "disk4" ]' -p '[ "dpool" ]'
+
+for the creation of a new zpool `dpool` for newly added disks `disk3` and
+`disk4`, which have been introduced previously to the disko config.
+
+Note that the values of options `-d` (or `--disks`) and `-p` (or `--pools`)
+must be valid (quoted) Nix expressions, lists of strings (disk and zpool names,
+respectively).
