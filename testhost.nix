@@ -156,7 +156,7 @@ in
     };
   };
 
-  security.sudo.extraConfig = lib.mkDefault ''
+  security.sudo.extraConfig = ''
     # Rollback results in sudo lectures after each reboot
     Defaults lecture = never
   '';
