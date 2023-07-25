@@ -47,6 +47,6 @@ set -x
 sudo nix run github:nix-community/disko \
   --extra-experimental-features 'nix-command flakes' \
   -- \
-  --mode disko "$hostname-disko.nix" \
-  $config_nix_args \
-  $disko_args
+  $disko_args \
+  --mode disko "./$hostname-disko.nix" \
+  $config_nix_args
