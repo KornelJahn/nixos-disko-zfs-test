@@ -19,6 +19,9 @@ while [ -n "$1" ]; do
       hostname="$1"
       shift
       ;;
+    *)
+      fail "unknown option: $1"
+      ;;
   esac
 done
 
