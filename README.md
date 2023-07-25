@@ -11,7 +11,7 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 ## Usage
 
 1. Fork this flake for yourself to modify it to your liking.
-2. (Optional) Prepare a VM with two identical disks. By default, VirtualBox hypervisor is considered. For QEMU/KVM, please edit `testhost.nix`.
+2. (Optional) Prepare a VM with two identical disks. Recommended size is 16 GiB each. By default, VirtualBox hypervisor is considered. For QEMU/KVM, please edit `testhost.nix`.
 3. Boot up a NixOS ISO (minimal ISO is recommended).
 4. Fire up a Nix shell with Git and Tmux (for convenience):
 
@@ -28,3 +28,19 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
         ./install.bash testhost
 
    This script also performs some pre- and post-install operations necessary for some state to become persistent.
+
+## Tips
+
+If you get the following error during NixOS installation after having edited the config,
+
+```
+error: filesystem error: cannot rename: Invalid cross-device link [...] [...]
+```
+
+then there is likely a different underlying error, which is unfortunately masked by this one.
+
+In that case, try to build the system config first as
+
+     nix build .#nixosConfigurations.testhost.config.system.build.toplevel
+
+which will then reveal the root cause for the error.
