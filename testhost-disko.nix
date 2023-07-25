@@ -3,7 +3,7 @@
 let
   devices = {
     disk = {
-      x = {
+      disk1 = {
         type = "disk";
         device = "/dev/disk/by-id/ata-VBOX_HARDDISK_VBafedd100-67286476";
         content = {
@@ -27,8 +27,8 @@ let
             };
           }; # partitions
         }; # content
-      }; # x
-      y = {
+      }; # disk1
+      disk2 = {
         type = "disk";
         device = "/dev/disk/by-id/ata-VBOX_HARDDISK_VBc909afa2-42881324";
         content = {
@@ -52,7 +52,7 @@ let
             };
           }; # partitions
         }; # content
-      }; # y
+      }; # disk2
     }; # disk
     zpool = {
       rpool = {
