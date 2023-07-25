@@ -15,12 +15,6 @@
     keyMap = "us";
   };
 
-  disko = (import ./disko-zfs-config.nix {
-    inherit lib;
-    disks = [ "x" "y" ];
-    zpools = [ "rpool" ];
-  }).disko;
-
   boot.loader.grub = {
     enable = true;
     efiSupport = true;
@@ -43,4 +37,5 @@
   };
 
   system.stateVersion = "23.05";
-}
+
+} // (import ./testhost-disko.nix { inherit lib; })

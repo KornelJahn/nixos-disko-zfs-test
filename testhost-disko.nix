@@ -1,4 +1,4 @@
-{ lib, disks, zpools ? [ ], ... }:
+{ lib, disks ? null, zpools ? null, ... }:
 
 let
   devices = {
@@ -146,7 +146,12 @@ let
 in
 {
   disko.devices = {
-    disk = lib.filterAttrs (n: v: builtins.elem n disks) devices.disk;
-    zpool = lib.filterAttrs (n: v: builtins.elem n zpools) devices.zpool;
+    disk = lib.filterAttrs
+      (n: v: disks == null || builtins.elem n disks)
+      devices.disk;
+
+    zpool = lib.filterAttrs
+      (n: v: zpools == null || builtins.elem n zpools)
+      devices.zpool;
   };
 }
