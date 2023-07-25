@@ -131,9 +131,9 @@ let
               "com.sun:auto-snapshot" = "true";
             };
           };
-          "safe/persist" = {
+          "safe/persistent" = {
             type = "zfs_fs";
-            mountpoint = "/persist";
+            mountpoint = "/persistent";
             options = {
               mountpoint = "legacy";
               "com.sun:auto-snapshot" = "true";
