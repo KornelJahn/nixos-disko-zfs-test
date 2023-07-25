@@ -39,4 +39,5 @@ sudo nixos-install --flake ".#$hostname" --no-root-passwd
 
 # Post-installation tasks
 sudo cp -ar /mnt/etc/ssh/authorized_keys.d /mnt/persistent/etc/ssh/
+sudo umount /mnt/boot*
 sudo zpool export -a
