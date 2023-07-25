@@ -21,10 +21,10 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 6. Clone the flake using Git and switch to the repo directory.
 7. Partition the disks and create the zpools as
 
-        ./provision.sh testhost
+        ./provision.bash testhost
 
 8. Install NixOS as
 
-        ./install.sh testhost
+        ./install.bash testhost
 
    This script also performs some pre- and post-install operations necessary for some state to become persistent.

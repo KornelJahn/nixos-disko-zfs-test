@@ -1,11 +1,8 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -e
 
-fail() {
-  echo "$1" >&2
-  exit 1
-}
+fail() { echo -e "$1" >&2; exit 1; }
 
 usage="usage: $(basename $0) [-h] [-t <target-hostname>] "
 usage+='[-d <disks-list-nix-expr>] [-p <zpools-list-nix-expr>] '
