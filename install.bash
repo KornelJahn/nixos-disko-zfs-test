@@ -33,6 +33,7 @@ set -x
 sudo mkdir -p /mnt/persistent/etc
 sudo cp -a /etc/machine-id /mnt/persistent/etc/
 sudo mkdir -p /mnt/persistent/etc/ssh
+sudo cp -a /tmp/pass-user-* /mnt/persistent/etc/
 
 # Installation
 sudo nixos-install --flake ".#$hostname" --no-root-passwd

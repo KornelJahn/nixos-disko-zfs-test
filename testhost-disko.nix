@@ -16,8 +16,6 @@ let
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot1";
-                # FIXME: to make mounting with one disk only smoother
-                # mountOptions = [ "nofail" ];
               };
             };
             zfs = {
@@ -43,8 +41,6 @@ let
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot2";
-                # FIXME: to make mounting with one disk only smoother
-                # mountOptions = [ "nofail" ];
               };
             };
             zfs = {
@@ -72,14 +68,14 @@ let
           mountpoint = "none";
           encryption = "aes-256-gcm";
           keyformat = "passphrase";
-          keylocation = "prompt";
-          # keylocation = "file:///tmp/secret.key";
+          # keylocation = "prompt";
+          keylocation = "file:///tmp/pass-zpool-rpool";
           compression = "lz4";
           "com.sun:auto-snapshot" = "false";
         };
-        # postCreateHook = ''
-        #   zfs set keylocation="prompt" rpool
-        # '';
+        postCreateHook = ''
+          zfs set keylocation="prompt" rpool
+        '';
         options = {
           ashift = "12";
           autotrim = "on";

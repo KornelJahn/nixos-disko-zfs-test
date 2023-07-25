@@ -176,8 +176,7 @@ in
   users = {
     mutableUsers = false;
     users.root = {
-      password = "root";
-      # passwordFile = "/persistent/etc/password-root";
+      passwordFile = "/persistent/etc/pass-user-root";
       # openssh.authorizedKeys.keys = [
       #   ""
       # ];
@@ -185,8 +184,7 @@ in
     users.nixos = {
       uid = 1000;
       isNormalUser = true;
-      password = "nixos";
-      # passwordFile = "/persistent/etc/password-nixos";
+      passwordFile = "/persistent/etc/pass-user-nixos";
       # openssh.authorizedKeys.keys = [
       #   ""
       # ];
