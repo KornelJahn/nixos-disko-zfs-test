@@ -75,11 +75,11 @@ in
 
   time.timeZone = "Europe/Budapest";
 
-  console = {
-    font = "Lat2-Treminus16";
-    keyMap = "us";
-    earlySetup = true;
-  };
+  # console = {
+  #   font = "Lat2-Treminus16";
+  #   keyMap = "us";
+  #   earlySetup = true;
+  # };
 
   i18n.defaultLocale = "en_US.UTF-8";
 
