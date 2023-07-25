@@ -168,6 +168,7 @@ in
     services.zfs-mount.enable = false;
 
     extraConfig = ''
+      DefaultTimeoutStartSec=20s
       DefaultTimeoutStopSec=10s
     '';
   };
