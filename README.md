@@ -33,11 +33,11 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
 8. Partition the disks and create the zpools as
 
-        ./provision testhost
+        ./provision -t testhost
 
 9. Install NixOS as
 
-        ./install testhost
+        ./install -t testhost
 
    This script also performs some pre- and post-install operations necessary for some state to become persistent.
 
