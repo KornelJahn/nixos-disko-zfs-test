@@ -1,4 +1,7 @@
-{ config, pkgs, lib, ... }:
+# Common configuration for virtual machines under VirtualBox (using emulated
+# PIIX4 and AHCI storage and OHCI+EHCI USB 2.0 Controller).
+
+{ config, lib, ... }:
 
 {
   boot.initrd.availableKernelModules = [

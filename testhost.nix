@@ -1,4 +1,4 @@
-{ config, pkgs, lib, modulesPath, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 let
   arcMaxMiB = 512;
@@ -12,11 +12,11 @@ let
 in
 {
   imports = [
-    "${modulesPath}/installer/scan/not-detected.nix"
-    # "${modulesPath}/profiles/qemu-guest.nix"
-    ./vbox-guest.nix
+    inputs.nixpkgs.nixosModules.notDetected
     inputs.disko.nixosModules.disko
     inputs.impermanence.nixosModules.impermanence
+    # ./qemu-guest.nix"
+    ./vbox-guest.nix
   ];
 
   nix = {
