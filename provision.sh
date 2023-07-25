@@ -3,7 +3,7 @@
 set -e
 
 fail() {
-  printf %s\\n "$1" >&2
+  echo "$1" >&2
   exit 1
 }
 
@@ -18,7 +18,7 @@ disko_args=
 while [ -n "$1" ]; do
   case $1 in
     -h|--help)
-      printf %s\\n "$usage"
+      echo "$usage"
       exit 0
       ;;
     -t)
@@ -43,7 +43,7 @@ while [ -n "$1" ]; do
   esac
 done
 
-[ -n "$hostname" ] || fail "error: target hostname not configured\\n\\n$usage"
+[ -n "$hostname" ] || fail "error: target hostname not configured\n\n$usage"
 
 set -x
 
