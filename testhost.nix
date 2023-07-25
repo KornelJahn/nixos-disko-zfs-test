@@ -78,7 +78,7 @@ in
   console = {
     font = "ter-v22n";
     keyMap = "us";
-    package = [ pkgs.terminus_font ];
+    packages = [ pkgs.terminus_font ];
     earlySetup = true;
   };
 
