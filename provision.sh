@@ -22,14 +22,17 @@ while [ -n "$1" ]; do
       exit 0
       ;;
     -t)
+      shift
       hostname="$1"
       shift
       ;;
     -d)
+      shift
       config_nix_args+="--arg disks $1 "
       shift
       ;;
     -p)
+      shift
       config_nix_args+="--arg zpools $1 "
       shift
       ;;
@@ -40,7 +43,7 @@ while [ -n "$1" ]; do
   esac
 done
 
-[ -z "$hostname" ] && fail "error: target hostname not configured\n\n$usage"
+[ -n "$hostname" ] || fail "error: target hostname not configured\\n\\n$usage"
 
 set -x
 

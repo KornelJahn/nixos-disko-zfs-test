@@ -18,13 +18,14 @@ while [ -n "$1" ]; do
       exit 0
       ;;
     -t)
+      shift
       hostname="$1"
       shift
       ;;
   esac
 done
 
-[ -z "$hostname" ] && fail "error: target hostname not configured\n\n$usage"
+[ -n "$hostname" ] || fail "error: target hostname not configured\\n\\n$usage"
 
 set -x
 
