@@ -3,4 +3,4 @@
 password="${1:-password}"
 ./mkpass -o /tmp/pass-zpool-rpool -p "$password"
 ./mkpass -o /tmp/pass-user-root -p "$password" -a sha-512
-./mkpass -o sha-512 /tmp/pass-user-nixos -p "$password" -a sha-512
+./mkpass -o /tmp/pass-user-nixos -p "$password" -a sha-512
