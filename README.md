@@ -20,9 +20,9 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
 5. There are two ways to jump into an installer Nix devshell of your forked flake for `testhost`:
 
-    a. Fire up a Nix shell with Git:
+    1. Fire up a Nix shell with Git:
 
-           NIX_CONFIG='experimental-features = nix-command flakes' nix-shell -p git
+             NIX_CONFIG='experimental-features = nix-command flakes' nix-shell -p git
 
        Then clone your flake using Git, switch to the repo directory, and enter
        the `testhost` installer shell as
@@ -31,7 +31,7 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
        The source code of the flake is editable in this case.
 
-    b. Enter the flake devshell directly by referencing the repo in `nix develop`. E.g. for this repo:
+    2. Enter the flake devshell directly by referencing the repo in `nix develop`. E.g. for this repo:
 
            nix develop --extra-experimental-features 'nix-command flakes' github:KornelJahn/nixos-disko-zfs-test#testhost
 
