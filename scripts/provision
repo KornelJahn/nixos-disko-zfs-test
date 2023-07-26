@@ -26,4 +26,4 @@ shift $((OPTIND-1))
 
 set -x
 
-disko --mode disko "${disko_args[@]}" "$target_host_disko_config"
+sudo disko --mode disko "${disko_args[@]}" "$target_host_disko_config"
