@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+target_host="${TARGET_HOST:?}"
+
+set -x
+
+# Pre-installation tasks
+sudo mkdir -p /mnt/persistent/etc
+sudo cp -a /etc/machine-id /mnt/persistent/etc/
+sudo mkdir -p /mnt/persistent/etc/ssh
+sudo cp -a /tmp/pass-user-* /mnt/persistent/etc/
+
+# Installation
+sudo nixos-install --flake ".#$TARGET_HOST" --no-root-passwd
+
+# Post-installation tasks
+sudo cp -ar /mnt/etc/ssh/authorized_keys.d /mnt/persistent/etc/ssh/
+sudo umount /mnt/boot*
+sudo zpool export -a

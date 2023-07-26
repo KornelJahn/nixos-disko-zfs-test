@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+script_name=$(basename "$0")
+
+# Switch to script directory
+cd "$(dirname -- "$0")"
+
+usage() {
+  local args='[-h] [-d <disks-list-nix-expr>] [-p <zpools-list-nix-expr>] '
+  args+='[<extra-disko-arg> ...]'
+  echo "usage: $script_name $args" >&2
+  exit "${1:?}"
+}
+
+target_host="${TARGET_HOST:?}"
+config_nix_args=()
+
+while getopts ':hd:p:' opt; do
+  case $opt in
+    d) config_nix_args+=("--arg disks $OPTARG");;
+    p) config_nix_args+=("--arg zpools $OPTARG");;
+    h) usage 0;;
+    *) usage 1;;
+  esac
+done
+shift $((OPTIND-1))
+
+set -x
+
+sudo nix run github:nix-community/disko \
+  --extra-experimental-features 'nix-command flakes' \
+  -- \
+  --mode disko "../hosts/$target_host-disko.nix" \
+  "${config_nix_args[@]}" \
+  "$@"

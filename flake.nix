@@ -8,10 +8,20 @@
     impermanence.url = "github:nix-community/impermanence";
   };
 
-  outputs = { self, nixpkgs, ... } @ inputs: {
-    nixosConfigurations.testhost = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; };
-      modules = [ ./testhost.nix ];
+  outputs = { self, nixpkgs, ... } @ inputs:
+    let
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    in
+    {
+      lib = import ./lib inputs;
+
+      devShells =  self.lib.mkInstallerShells self.nixosConfigurations;
+
+      formatter = pkgs.nixpkgs-fmt;
+
+      nixosConfigurations.testhost = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [ ./hosts/testhost.nix ];
+      };
     };
-  };
 }
