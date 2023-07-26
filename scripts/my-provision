@@ -4,15 +4,19 @@ set -euo pipefail
 
 script_name=$(basename "$0")
 
-usage() {
-  local args='[-h] [-n] [-d <disks-list-nix-expr>] [-p <zpools-list-nix-expr>]'
-  echo "usage: $script_name $args" >&2
-  exit "${1:?}"
-}
+_usage="
+Usage: $script_name [-hn] [-d <disks-list-nix>] [-p <zpools-list-nix>]
 
-target_host="${TARGET_HOST:?}"
-flake_dir="${FLAKE_DIR:?}"
-disko_config="$flake_dir/hosts/$target_host-disko.nix"
+Options:
+  -d <disks-list-nix>     Nix expression of the list of disks IDs that should be
+                          prepared.
+  -h                      Display a help screen and quit.
+  -n                      Perform a trial run only with no changes made.
+  -p <zpools-list-nix>    Nix experssion of the list of ZFS pools that should be
+                          prepared.
+"
+
+usage() { echo "$_usage" >&2; exit "${1:?}"; }
 
 disko_args=()
 
@@ -26,6 +30,11 @@ while getopts ':hnd:p:' opt; do
   esac
 done
 shift $((OPTIND-1))
+
+target_host="${TARGET_HOST:?}"
+flake_dir="${FLAKE_DIR:?}"
+disko_config="$flake_dir/hosts/$target_host-disko.nix"
+
 
 set -x
 

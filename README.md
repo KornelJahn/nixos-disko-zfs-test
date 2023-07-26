@@ -22,12 +22,12 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
     1. Fire up a Nix shell with Git:
 
-             NIX_CONFIG='experimental-features = nix-command flakes' nix-shell -p git
+            NIX_CONFIG='experimental-features = nix-command flakes' nix-shell -p git
 
        Then clone your flake using Git, switch to the repo directory, and enter
        the `testhost` installer shell as
 
-           nix develop .#testhost
+            nix develop .#testhost
 
        The source code of the flake is editable in this case.
 
@@ -37,13 +37,15 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
        The source code of the flake resides in the Nix store in this case and is therefore read-only.
 
-6. Set up encryption passphrase and user passwords in advance for unattended filesystem creation and installation as:
+6. Set up disk encryption passphrase and user passwords in advance for unattended filesystem creation and installation as:
 
-        my-mkpass /tmp/pass-zpool-rpool
-        my-mkpass -a sha-512 /tmp/pass-user-root
-        my-mkpass -a sha-512 /tmp/pass-user-nixos
+        my-mkpass -k /tmp/pass-zpool-rpool
+        my-mkpass /tmp/pass-user-root
+        my-mkpass /tmp/pass-user-nixos
 
-   Alternatively, for quick testing, execute
+   By default, the password is hashed and salted using `mkpasswd` before storage. Option `-k` overrides this and keeps the password as plain text for storage.
+
+   Alternatively, for quick testing, simply execute
 
         $FLAKE_DIR/hosts/testhost-pass
 

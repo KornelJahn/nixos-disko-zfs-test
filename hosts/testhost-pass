@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
 password="${1:-password}"
-my-mkpass -p "$password" /tmp/pass-zpool-rpool
-my-mkpass -p "$password" -a sha-512 /tmp/pass-user-root
-my-mkpass -p "$password" -a sha-512 /tmp/pass-user-nixos
+my-mkpass -p "$password" -k /tmp/pass-zpool-rpool
+my-mkpass -p "$password" /tmp/pass-user-root
+my-mkpass -p "$password" /tmp/pass-user-nixos
