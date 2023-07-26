@@ -9,7 +9,7 @@ cd "$(dirname -- "$0")"
 
 usage() {
   local args='[-h] [-d <disks-list-nix-expr>] [-p <zpools-list-nix-expr>] '
-  args+='[<extra-disko-arg> ...]'
+  args+='[-- <extra-disko-arg> ...]'
   echo "usage: $script_name $args" >&2
   exit "${1:?}"
 }
