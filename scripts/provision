@@ -30,8 +30,5 @@ shift $((OPTIND-1))
 set -x
 
 sudo nix run github:nix-community/disko \
-  --extra-experimental-features 'nix-command flakes' \
-  -- \
-  --mode disko "$target_host_disko_config" \
-  "${config_nix_args[@]}" \
-  "$@"
+  --extra-experimental-features 'nix-command flakes' -- \
+  --mode disko "${config_nix_args[@]}" "$@" "$target_host_disko_config"
