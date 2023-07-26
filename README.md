@@ -33,7 +33,7 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
     2. Enter the flake devshell directly by referencing the repo in `nix develop`. E.g. for this repo:
 
-           nix develop --extra-experimental-features 'nix-command flakes' github:KornelJahn/nixos-disko-zfs-test#testhost
+           nix develop --experimental-features 'nix-command flakes' github:KornelJahn/nixos-disko-zfs-test#testhost
 
        The source code of the flake resides in the Nix store in this case and is therefore read-only.
 
@@ -51,9 +51,7 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
    to set all required passwords and passphrases to `password`.
 
-7. Partition the disks and create the zpools by executing `my-provision`.
-
-8. Install NixOS by executing `my-install`. This custom command also performs some pre- and post-install operations necessary for some state to become persistent.
+7. Partition the disks, create the file systems, and install NixOS by executing `my-provision && my-install`.
 
 ## Troubleshooting
 
