@@ -10,14 +10,16 @@
 
   outputs = { self, nixpkgs, ... } @ inputs:
     let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      supportedSystems = [ "x86_64-linux" ];
+      forEachSystem = nixpkgs.lib.genAttrs supportedSystems;
+      forEachPkgs = f: forEachSystem (sys: (f nixpkgs.legacyPackages.${sys}));
     in
     {
       lib = import ./lib inputs;
 
-      devShells =  self.lib.mkInstallerShells self.nixosConfigurations;
+      devShells = self.lib.mkInstallerShells self.nixosConfigurations;
 
-      formatter = pkgs.nixpkgs-fmt;
+      formatter = forEachPkgs (pkgs: pkgs.nixpkgs-fmt);
 
       nixosConfigurations.testhost = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };

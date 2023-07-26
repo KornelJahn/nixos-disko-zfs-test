@@ -1,6 +1,8 @@
 { self, nixpkgs, ... }:
 
 let
+  inherit (nixpkgs) lib;
+
   scripts = {
     mkpass = pkgs: pkgs.writeShellApplication {
       name = "mkpass";
@@ -10,7 +12,7 @@ let
 
     provision = pkgs: pkgs.writeShellApplication {
       name = "provision";
-      test = builtins.readFile ../scripts/provision;
+      text = builtins.readFile ../scripts/provision;
       runtimeInputs = with pkgs; [ ];
     };
 
