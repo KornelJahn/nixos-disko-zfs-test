@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 
+# Store plain-text or hashed & salted password in a file that is root-readable
+# only. For non-plain-text storage, `mkpasswd` is used on the plain-text input.
+#
+# For linux login passwords, SHA-512 hashing algorithm must be used via the
+# `-a sha-512` option.
+# A plain-text password can be supplied via the `-p` option (e.g. for testing
+# purposes), otherwise the password is read twice from stdin.
+
 set -euo pipefail
 
 script_name=$(basename "$0")
 
 usage() {
-  local args='[-h] [-a <hash-algo>] [-p <explicit-password>] <output-file>'
+  local args='[-h] [-a <hash-algo>] [-p <plain-text-password>] <output-file>'
   echo "usage: $script_name $args" >&2
   exit "${1:?}"
 }
@@ -41,8 +49,10 @@ while [[ $password != "$verification" ]]; do
 done
 
 if [[ -z $algo ]]; then
+  # Transfer password untouched if `algo` is empty
   hash_func='cat'
 else
+  # Hash and salt password using algorith `algo`
   hash_func="mkpasswd -m $algo -s"
 fi
 
