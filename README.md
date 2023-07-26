@@ -45,7 +45,7 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
    Alternatively, for quick testing, execute
 
-        hosts/testhost-pass
+        $FLAKE_DIR/hosts/testhost-pass
 
    to set all required passwords and passphrases to `password`.
 
