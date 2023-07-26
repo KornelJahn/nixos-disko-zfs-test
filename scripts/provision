@@ -16,7 +16,7 @@ usage() {
 target_host_disko_config="${TARGET_HOST_DISKO_CONFIG:?}"
 disko_args=()
 
-while getopts ':hd:p:' opt; do
+while getopts ':hnd:p:' opt; do
   case $opt in
     d) disko_args+=("--arg disks $OPTARG");;
     p) disko_args+=("--arg zpools $OPTARG");;
