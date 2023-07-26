@@ -4,9 +4,6 @@ set -euo pipefail
 
 script_name=$(basename "$0")
 
-# Switch to script directory
-cd "$(dirname -- "$0")"
-
 usage() {
   local args='[-h] [-n] [-d <disks-list-nix-expr>] [-p <zpools-list-nix-expr>]'
   echo "usage: $script_name $args" >&2
