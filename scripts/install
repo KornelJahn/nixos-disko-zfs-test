@@ -3,6 +3,7 @@
 set -euo pipefail
 
 target_host="${TARGET_HOST:?}"
+flake_dir="${FLAKE_DIR:?}"
 
 set -x
 
@@ -13,7 +14,7 @@ sudo mkdir -p /mnt/persistent/etc/ssh
 sudo cp -a /tmp/pass-user-* /mnt/persistent/etc/
 
 # Installation
-sudo nixos-install --flake ".#$target_host" --no-root-passwd
+sudo nixos-install --flake "$flake_dir#$target_host" --no-root-passwd
 
 # Post-installation tasks
 sudo cp -ar /mnt/etc/ssh/authorized_keys.d /mnt/persistent/etc/ssh/

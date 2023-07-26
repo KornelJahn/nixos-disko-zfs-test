@@ -6,9 +6,7 @@ let
   # TODO: provide option to disable installer shell creation for certain
   # configs and return `null` instead
   mkInstallerShell' = { config, pkgs, diskoPkg }:
-    let
-      inherit (config.networking) hostName;
-    in pkgs.stdenvNoCC.mkDerivation {
+    pkgs.stdenvNoCC.mkDerivation {
       name = "installer-shell";
       buildInputs = with pkgs; [ coreutils util-linux mkpasswd zfs diskoPkg ];
       shellHook = ''
@@ -16,9 +14,8 @@ let
       '';
 
       # Environment variables
-      TARGET_HOST = hostName;
-      TARGET_HOST_DISKO_CONFIG =
-        builtins.toString ../hosts/${hostName}-disko.nix;
+      TARGET_HOST = config.networking.hostName;
+      FLAKE_DIR = builtins.toString ./..;
     };
 
   mkInstallerShell = name: nixosConfiguration:

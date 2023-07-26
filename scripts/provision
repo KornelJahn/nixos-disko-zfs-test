@@ -10,7 +10,10 @@ usage() {
   exit "${1:?}"
 }
 
-target_host_disko_config="${TARGET_HOST_DISKO_CONFIG:?}"
+target_host="${TARGET_HOST:?}"
+flake_dir="${FLAKE_DIR:?}"
+disko_config="$flake_dir/hosts/$target_host-disko.nix"
+
 disko_args=()
 
 while getopts ':hnd:p:' opt; do
@@ -26,4 +29,4 @@ shift $((OPTIND-1))
 
 set -x
 
-sudo disko --mode disko "${disko_args[@]}" "$target_host_disko_config"
+sudo disko --mode disko "${disko_args[@]}" "$disko_config"
