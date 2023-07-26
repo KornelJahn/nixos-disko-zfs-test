@@ -140,7 +140,7 @@ let
             };
           };
         }; # datasets
-      }; # zroot
+      }; # rpool
     }; # zpool
   }; # devices
 in
