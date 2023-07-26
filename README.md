@@ -10,29 +10,38 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
 ## Usage
 
-1. Fork this flake for yourself to modify it to your liking.
+1. (Optional) Prepare a VM with two identical disks. Recommended size is 16 GiB each (not pre-allocated but dynamically sized). By default, VirtualBox hypervisor is considered but QEMU/KVM (with virtio storage) is also supported.
 
-2. (Optional) Prepare a VM with two identical disks. Recommended size is 16 GiB each (not pre-allocated but dynamically sized). By default, VirtualBox hypervisor is considered. For QEMU/KVM (with virtio storage), please edit `hosts/testhost.nix` and uncomment the import of `hosts/qemu-guest.nix` and comment the import of `hosts/vbox-guest.nix`.
+2. Boot up a NixOS ISO (minimal ISO is recommended).
 
-3. Boot up a NixOS ISO (minimal ISO is recommended).
+3. Find out persistent virtual disk block device paths by comparing `lsblk` and `ls -l /dev/disk/by-id` outputs.
 
-4. Fire up a Nix shell with Git and Tmux (for convenience):
+4. Fork this flake for yourself and modify it according to your personal preferences. Importantly, switch imports in `hosts/testhost.nix` from `hosts/vbox-guest.nix` to `hosts/qemu-guest.nix` if using QEMU/KVM as hypervisor and replace the disk block device paths in `hosts/testhost-disko.nix` by the paths found in the previous step.
 
-        NIX_CONFIG='experimental-features = nix-command flakes' nix-shell -p git tmux --run tmux
+5. There are two ways to jump into an installer Nix devshell of your forked flake for `testhost`:
 
-5. Clone the flake using Git and switch to the repo directory.
+    a. Fire up a Nix shell with Git:
 
-6. Find out persistent virtual disk IDs by comparing `lsblk` and `ls -l /dev/disk/by-id` outputs and modify `hosts/testhost-disko.nix` accordingly.
+           NIX_CONFIG='experimental-features = nix-command flakes' nix-shell -p git
 
-7. Enter the `testhost` installation shell as
+       Then clone your flake using Git, switch to the repo directory, and enter
+       the `testhost` installer shell as
 
-        nix develop .#testhost
+           nix develop .#testhost
 
-8. Set up encryption passphrase and user passwords in advance for unattended filesystem creation and installation as:
+       The source code of the flake is editable in this case.
 
-        mkpass /tmp/pass-zpool-rpool
-        mkpass -a sha-512 /tmp/pass-user-root
-        mkpass -a sha-512 /tmp/pass-user-nixos
+    b. Enter the flake devshell directly by referencing the repo in `nix develop`. E.g. for this repo:
+
+           nix develop --extra-experimental-features 'nix-command flakes' github:KornelJahn/nixos-disko-zfs-test#testhost
+
+       The source code of the flake resides in the Nix store in this case and is therefore read-only.
+
+6. Set up encryption passphrase and user passwords in advance for unattended filesystem creation and installation as:
+
+        my-mkpass /tmp/pass-zpool-rpool
+        my-mkpass -a sha-512 /tmp/pass-user-root
+        my-mkpass -a sha-512 /tmp/pass-user-nixos
 
    Alternatively, for quick testing, execute
 
@@ -40,9 +49,9 @@ The dataset structure follows [grahamc's](https://grahamc.com/blog/erase-your-da
 
    to set all required passwords and passphrases to `password`.
 
-9. Partition the disks and create the zpools by executing `provision`.
+7. Partition the disks and create the zpools by executing `my-provision`.
 
-10. Install NixOS by executing `install`. This custom command also performs some pre- and post-install operations necessary for some state to become persistent.
+8. Install NixOS by executing `my-install`. This custom command also performs some pre- and post-install operations necessary for some state to become persistent.
 
 ## Troubleshooting
 
@@ -83,13 +92,13 @@ Credits: https://www.youtube.com/watch?v=t_7gBLUa600
 
 The disko configuration of this flake is composed in a way that partitioning and file system creation can also run on a subset of disks, e.g. when replacing a failed disk or adding additional disks later for a new mirrored zpool storage.
 
-Accordingly, inside the installation shell `provision` can be run as
+Accordingly, inside the installer shell `my-provision` can be run as
 
-    provision -d '[ "disk1" ]'
+    my-provision -d '[ "disk1" ]'
 
 for partitioning of one disk only, or as
 
-    provision -d '[ "disk3" "disk4" ]' -p '[ "dpool" ]'
+    my-provision -d '[ "disk3" "disk4" ]' -p '[ "dpool" ]'
 
 for the creation of a new zpool `dpool` for newly added disks `disk3` and `disk4`, which have been introduced previously to the disko config.
 
