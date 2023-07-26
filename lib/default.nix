@@ -1,16 +1,16 @@
-{ self, nixpkgs, ... }:
+{ self, nixpkgs, disko, ... }:
 
 let
   inherit (nixpkgs) lib;
 
   # TODO: provide option to disable installer shell creation for certain
   # configs and return `null` instead
-  mkInstallerShell' = { config, pkgs }:
+  mkInstallerShell' = { config, pkgs, diskoPkg }:
     let
       inherit (config.networking) hostName;
     in pkgs.stdenvNoCC.mkDerivation {
       name = "installer-shell";
-      buildInputs = with pkgs; [ coreutils util-linux mkpasswd zfs ];
+      buildInputs = with pkgs; [ coreutils util-linux mkpasswd zfs diskoPkg ];
       shellHook = ''
         export PATH="${builtins.toString ../scripts}:$PATH"
       '';
@@ -24,7 +24,10 @@ let
   mkInstallerShell = name: nixosConfiguration:
     let
       inherit (nixosConfiguration.pkgs.stdenv.hostPlatform) system;
-      shell = mkInstallerShell' { inherit (nixosConfiguration) config pkgs; };
+      shell = mkInstallerShell' {
+        inherit (nixosConfiguration) config pkgs;
+        diskoPkg = disko.packages.${system}.disko;
+      };
     in
     lib.optionalAttrs (shell != null) { ${system}.${name} = shell; };
 
