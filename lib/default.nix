@@ -29,11 +29,16 @@ let
 
   # TODO: provide option to disable installer shell creation for certain
   # configs and return `null` instead
-  mkInstallerShell' = { config, pkgs }: pkgs.stdenvNoCC.mkDerivation {
-    name = "installer-shell";
-    buildInputs = map (f: f pkgs) (builtins.attrValues scripts);
-    TARGET_HOST = config.networking.hostName;
-  };
+  mkInstallerShell' = { config, pkgs }:
+    let
+      inherit (config.networking) hostName;
+    in pkgs.stdenvNoCC.mkDerivation {
+      name = "installer-shell";
+      buildInputs = map (f: f pkgs) (builtins.attrValues scripts);
+      TARGET_HOST = hostName;
+      TARGET_HOST_DISKO_CONFIG =
+        builtins.toString ../hosts/${hostName}-disko.nix;
+    };
 
   mkInstallerShell = name: nixosConfiguration:
     let

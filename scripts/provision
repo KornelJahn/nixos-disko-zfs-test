@@ -14,7 +14,7 @@ usage() {
   exit "${1:?}"
 }
 
-target_host="${TARGET_HOST:?}"
+target_host_disko_config="${TARGET_HOST_DISKO_CONFIG:?}"
 config_nix_args=()
 
 while getopts ':hd:p:' opt; do
@@ -32,6 +32,6 @@ set -x
 sudo nix run github:nix-community/disko \
   --extra-experimental-features 'nix-command flakes' \
   -- \
-  --mode disko "../hosts/$target_host-disko.nix" \
+  --mode disko "$target_host_disko_config" \
   "${config_nix_args[@]}" \
   "$@"
